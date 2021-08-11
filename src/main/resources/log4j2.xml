@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Appenders>
+        # Console appender
+        <Console name="stdout" target="SYSTEM_OUT">
+            # Pattern of log message for console appender
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %p %m%n"/>
+        </Console>
+
+        # Rolling appender
+        <RollingFile name="roll-by-size"
+                     fileName="/tmp/dnschecker/checker.log" filePattern="/tmp/dnschecker/checker.%i.log.gz"
+                     ignoreExceptions="false">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} %p %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy
+                        size="4096 KB"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        # Override log level for specified package
+        <Logger name="com.starburstdata.dnschecker" level="TRACE"/>
+
+        <Logger name="com.starburstdata.dnschecker.DnsChecker"
+                level="TRACE">
+            <AppenderRef ref="roll-by-size"/>
+        </Logger>
+    </Loggers>
+</Configuration>
